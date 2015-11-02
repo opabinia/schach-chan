@@ -24,8 +24,7 @@ public class ValidationDriver<V, T> {
                     .toArray(Method[]::new);
 
             for(Method m : methods) {
-                boolean result = (boolean)m.invoke(validator, buildParameter(signatureToFieldName(m), target));
-                if(!result) return false;
+                if(!(boolean)m.invoke(validator, buildParameter(signatureToFieldName(m), target))) return false;
             }
         }
 
@@ -44,7 +43,7 @@ public class ValidationDriver<V, T> {
         return depend;
     }
 
-    private static String getParameterIndicateFieldName(Parameter parameter) {
+    private static String getParameterIndicatedFieldName(Parameter parameter) {
         if(parameter.getAnnotation(Target.class) != null) {
             return parameter.getAnnotation(Target.class).value();
         } else {
@@ -54,7 +53,7 @@ public class ValidationDriver<V, T> {
 
     private static String[] signatureToFieldName(Method method) {
         return Arrays.stream(method.getParameters())
-                .map(ValidationDriver::getParameterIndicateFieldName)
+                .map(ValidationDriver::getParameterIndicatedFieldName)
                 .toArray(String[]::new);
     }
 
